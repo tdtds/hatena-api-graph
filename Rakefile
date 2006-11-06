@@ -8,7 +8,7 @@ require 'rake/rdoctask'
 require 'rake/contrib/rubyforgepublisher'
 require 'fileutils'
 include FileUtils
-require File.join(File.dirname(__FILE__), 'lib', 'hatenaapigraph', 'version')
+require File.join(File.dirname(__FILE__), 'lib', 'hatena', 'api', 'graph')
 
 AUTHOR = "gorou"
 EMAIL = "your contact email for bug fixes and info"
@@ -20,7 +20,7 @@ BIN_FILES = %w(  )
 
 NAME = "hatenaapigraph"
 REV = File.read(".svn/entries")[/committed-rev="(d+)"/, 1] rescue nil
-VERS = ENV['VERSION'] || (Hatenaapigraph::VERSION::STRING + (REV ? ".#{REV}" : ""))
+VERS = ENV['VERSION'] || (Hatena::API::Graph::VERSION::STRING + (REV ? ".#{REV}" : ""))
 CLEAN.include ['**/.*.sw?', '*.gem', '.config']
 RDOC_OPTS = ['--quiet', '--title', "hatenaapigraph documentation",
     "--opname", "index.html",
@@ -83,3 +83,21 @@ end
 task :uninstall => [:clean] do
   sh %{sudo gem uninstall #{NAME}}
 end
+
+Rake::RDocTask.new { |rdoc|
+  rdoc.rdoc_dir = 'html'
+  rdoc.options += RDOC_OPTS
+  rdoc.template = "#{ENV['template']}.rb" if ENV['template']
+  if ENV['DOC_FILES']
+    rdoc.rdoc_files.include(ENV['DOC_FILES'].split(/,\s*/))
+  else
+    rdoc.rdoc_files.include('README', 'CHANGELOG')
+    rdoc.rdoc_files.include('lib/**/*.rb')
+  end
+}
+
+desc "Publish to RubyForge"
+task :rubyforge => [:rdoc, :package] do
+  Rake::RubyForgePublisher.new(RUBYFORGE_PROJECT, 'secondlife').upload
+end
+

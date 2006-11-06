@@ -1,3 +1,22 @@
-README for hatenaapigraph
-=========================
+= Hatena::API::Graph -- Hatena Graph API
 
+== SYNOPSIS
+
+  require 'rubygems'
+  require 'hatena/api/graph'
+
+  graph = Hatena::API::Graph.new('username', 'password')
+  graph.post('graphname', Time.now, 10.5)
+  graph.post(graphname, timestamp, value)
+
+== Installation
+
+ # gem install hatenaapigraph
+
+== License
+
+Hatena::API::Graph is released under the MIT license.
+
+== Author
+
+secondlife@no.spam@hatena.ne.jp
