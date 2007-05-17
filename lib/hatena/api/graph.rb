@@ -10,14 +10,6 @@ module Hatena
   module API
     class GraphError < StandardError; end
     class Graph
-      module VERSION #:nodoc:
-        MAJOR = 0
-        MINOR = 0
-        TINY  = 2
-
-        STRING = [MAJOR, MINOR, TINY].join('.')
-      end
-
       DATE_FORMAT = '%Y-%m-%d'
       GRAPH_API_URI = URI.parse 'http://graph.hatena.ne.jp/api/post'
 
@@ -34,7 +26,7 @@ module Hatena
           'X-WSSE' => wsse(@username, @password),
         }
         params = {
-          :graphname => URI::encode(graphname),
+          :graphname => graphname,
           :date => date,
           :value => value,
         }
@@ -48,7 +40,10 @@ module Hatena
         req = ::Net::HTTP::Post.new(url.path, headers)
         req.form_data = params
         req.basic_auth url.user, url.password if url.user
-        ::Net::HTTP.new(url.host, url.port).start {|http| http.request(req) }
+        proxy_host, proxy_port = (ENV['HTTP_PROXY'] || '').split(/:/)
+        ::Net::HTTP::Proxy(proxy_host, proxy_port.to_i).start(url.host, url.port) {|http|
+          http.request(req)
+        }
       end
 
       def wsse(username, password)

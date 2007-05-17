@@ -1,3 +1,8 @@
-* 0.0.2* (October 19th, 2005)
+* 0.1.1* (May 16th, 2007)
+  Multibyte graphname Bug Fix
+    - http://d.hatena.ne.jp/takatoh/20070502/hatenagraph (thanks!)
+  use proxy
+    - http://sho.tdiary.net/20070112.html#p01 (thanks!)
 
-* add VERSION const
+* 0.1.0*
+  first release
