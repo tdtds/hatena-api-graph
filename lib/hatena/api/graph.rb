@@ -16,7 +16,9 @@ module Hatena
       def initialize(username, password)
         @username = username
         @password = password
+        @proxy = nil
       end
+      attr_accessor :proxy
 
       def post(graphname, date, value)
         value = value.to_f
@@ -40,10 +42,13 @@ module Hatena
         req = ::Net::HTTP::Post.new(url.path, headers)
         req.form_data = params
         req.basic_auth url.user, url.password if url.user
-        proxy_host, proxy_port = (ENV['HTTP_PROXY'] || '').split(/:/)
-        ::Net::HTTP::Proxy(proxy_host, proxy_port.to_i).start(url.host, url.port) {|http|
-          http.request(req)
-        }
+        if @proxy
+          proxy = @proxy
+        else
+          proxy_host, proxy_port = (ENV['HTTP_PROXY'] || '').split(/:/)
+          proxy = ::Net::HTTP::Proxy(proxy_host, proxy_port.to_i)
+        end
+        proxy.start(url.host, url.port) {|http| http.request(req) }
       end
 
       def wsse(username, password)

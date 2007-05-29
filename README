@@ -9,6 +9,10 @@
   graph.post('graphname', Time.now, 10.5)
   graph.post(graphname, timestamp, value)
 
+  # use proxy
+  graph.proxy = Net::HTTP::Proxy(proxy_host, proxy_port, proxy_user, proxy_pass)
+  graph.post(graphname, timestamp, value)
+
 == Installation
 
  # gem install hatenaapigraph
