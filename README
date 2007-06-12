@@ -6,12 +6,19 @@
   require 'hatena/api/graph'
 
   graph = Hatena::API::Graph.new('username', 'password')
-  graph.post('graphname', Time.now, 10.5)
-  graph.post(graphname, timestamp, value)
+  # graph.post('graphname', Time.now, 10.5) # obsolute
+  graph.post_data(graphname, :date => Date.today, :value => 10)
+  data = graph.get_data(graphname)  
+  p data[Date.today]
+  data2 = graph.get_data('日記数', :username => 'hatenadiary')
+
+  config = graph.get_config(graphname)
+  config['reverse'] = true
+  graph.post_config(graphname, config)
 
   # use proxy
   graph.proxy = Net::HTTP::Proxy(proxy_host, proxy_port, proxy_user, proxy_pass)
-  graph.post(graphname, timestamp, value)
+  graph.post_data(graphname, :value => 10)
 
 == Installation
 
