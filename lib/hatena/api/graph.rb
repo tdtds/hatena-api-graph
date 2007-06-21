@@ -60,7 +60,6 @@ module Hatena
           :type => 'yaml',
         }.merge options
         res = http_get GRAPH_API_DATA_URI, params
-        p GRAPH_API_DATA_URI, params
         raise GraphError.new("request not successed: #{res}") if res.code != '200'
         YAML::load res.body
       end
