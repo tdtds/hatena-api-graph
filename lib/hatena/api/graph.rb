@@ -1,7 +1,7 @@
 #!/usr/bin/env ruby
 
 require 'base64'
-require 'sha1'
+require 'digest/sha1'
 require 'net/http'
 require 'uri'
 require 'time'

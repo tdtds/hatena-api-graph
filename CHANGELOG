@@ -1,3 +1,6 @@
+* 0.2.2.1* (Aug 24th, 2011)
+  Ported to ruby 1.9.
+
 * 0.2.2* (June 21th, 2007)
   Fix output string bug. (thx takatoh!)
 
